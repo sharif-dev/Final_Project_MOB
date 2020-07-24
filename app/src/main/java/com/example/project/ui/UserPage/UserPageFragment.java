@@ -1,4 +1,4 @@
-package com.example.project.ui;
+package com.example.project.ui.UserPage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import com.example.project.R;
 
 public class UserPageFragment extends Fragment {
 
+    UserPageViewModel userPageViewModel;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

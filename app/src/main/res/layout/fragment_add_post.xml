@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/profile_image_add_post"
+        android:id="@+id/profile_image_post"
         android:layout_width="86dp"
         android:layout_height="73dp"
         android:layout_marginTop="20dp"
@@ -17,7 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.054"
-        app:srcCompat="@drawable/dislike" />
+        app:srcCompat="@drawable/ic_baseline_person_24"
+        tools:ignore="VectorDrawableCompat" />
 
     <LinearLayout
         android:id="@+id/linearLayout_add_post"
@@ -34,7 +35,7 @@
         app:layout_constraintVertical_bias="0.338">>
 
         <EditText
-            android:id="@+id/text_add_post"
+            android:id="@+id/text_post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
