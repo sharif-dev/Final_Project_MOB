@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.project.R;
+import com.google.android.material.tabs.TabLayout;
 
 public class FaveStarFragment extends Fragment {
 
@@ -25,13 +26,8 @@ public class FaveStarFragment extends Fragment {
         faveStarViewModel =
                 ViewModelProviders.of(this).get(FaveStarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_fave_stars, container, false);
-        //final TextView textView = root.findViewById(R.id.text_stars);
-        faveStarViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                //textView.setText(s);
-            }
-        });
+
+
         return root;
 
 

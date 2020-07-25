@@ -10,22 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SignIn"
+            android:name=".SignInActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <!--OR Other activities like this And  intent filter is not necessary in other activites-->
-        <activity android:name=".MainActivity" >
-        </activity>
-
-        <activity android:name=".SignUp" >
-        </activity>
-        <!--OR Add Other activities like this-->
+        </activity> <!-- OR Other activities like this And  intent filter is not necessary in other activites -->
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".AddPostActivity" />
     </application>
 
 </manifest>

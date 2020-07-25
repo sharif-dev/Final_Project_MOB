@@ -1,17 +1,14 @@
 package com.example.project;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SignIn extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,18 +24,18 @@ public class SignIn extends AppCompatActivity {
         sign_in.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                Intent myIntent = new Intent(SignIn.this, MainActivity.class);
+                Intent myIntent = new Intent(SignInActivity.this, MainActivity.class);
                 //myIntent.putExtra("key", value); //Optional parameters
-                SignIn.this.startActivity(myIntent);
+                SignInActivity.this.startActivity(myIntent);
             }
         });
 
         sign_up.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
             {
-                Intent myIntent = new Intent(SignIn.this, SignUp.class);
+                Intent myIntent = new Intent(SignInActivity.this, SignUpActivity.class);
                 //myIntent.putExtra("key", value); //Optional parameters
-                SignIn.this.startActivity(myIntent);
+                SignInActivity.this.startActivity(myIntent);
             }
         });
 

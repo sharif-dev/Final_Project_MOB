@@ -9,8 +9,8 @@ public class FaveStarViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
     public FaveStarViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is favestar fragment");
+        //mText = new MutableLiveData<>();
+        //mText.setValue("This is favestar fragment");
     }
 
     public LiveData<String> getText() {
