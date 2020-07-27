@@ -6,12 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.FaveStar.FaveStarFragment">
 
-
-    <TextView
-        android:id="@+id/fave_star_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fave star"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fave_star_recycl"
+        android:layout_width="409dp"
+        android:layout_height="729dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

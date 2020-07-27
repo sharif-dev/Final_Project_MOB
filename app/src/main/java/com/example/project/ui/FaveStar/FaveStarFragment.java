@@ -17,14 +17,10 @@ import com.google.android.material.tabs.TabLayout;
 
 public class FaveStarFragment extends Fragment {
 
-    private FaveStarViewModel faveStarViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.fragment_fave_stars,container,false);
 
-        faveStarViewModel =
-                ViewModelProviders.of(this).get(FaveStarViewModel.class);
         View root = inflater.inflate(R.layout.fragment_fave_stars, container, false);
 
 

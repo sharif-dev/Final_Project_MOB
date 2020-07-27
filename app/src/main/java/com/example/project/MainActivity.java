@@ -1,6 +1,8 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,6 +27,24 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+
+     /*   navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+
+                if(item.getItemId()==R.id.navigation_add_post){
+                    Intent intent = new Intent(MainActivity.this, AddPostActivity.class);
+                    startActivity(intent);
+                }
+
+
+                return false;
+            }
+        });*/
+
+
+
     }
 
 }

@@ -6,4 +6,7 @@
     <string name="title_activity_tab_activity">tab_activity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="your_posts">your posts</string>
+    <string name="you_liked">you liked</string>
+    <string name="log_out">Log Out</string>
 </resources>
