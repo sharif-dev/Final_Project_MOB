@@ -4,19 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp">
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/reounded_corner_blue">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/rounded_corner"
         android:orientation="horizontal"
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-<!--
+
+        <!--
         <ImageView
             android:id="@+id/profile_image_post"
             android:layout_width="86dp"
@@ -26,12 +37,13 @@
             app:srcCompat="@drawable/maryam" />-->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/maryam"
-            app:border_color="@android:color/holo_blue_dark"
+            android:src="@drawable/ic_baseline_person_24"
+            app:border_color="@color/design_default_color_primary_dark"
             app:border_width="3dp"
             app:layout_constraintBottom_toTopOf="@+id/tabLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,6 +55,8 @@
         <LinearLayout
             android:layout_width="210dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="5dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -78,37 +92,52 @@
                 android:text="hello"
                 android:textColor="@android:color/black" />
 
+            <ImageView
+                android:id="@+id/image_item_post"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+            <VideoView
+                android:id="@+id/video_item_post"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
             android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/dislike_post"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/dislike" />
-
-            <TextView
-                android:id="@+id/like_text_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:text="0" />
 
             <ImageView
                 android:id="@+id/like_post"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/like" />
+                app:srcCompat="@drawable/up" />
+
+            <TextView
+                android:id="@+id/like_text_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal|center_vertical"
+                android:layout_weight="1"
+                android:gravity="center|center_horizontal|center_vertical"
+                android:text="0"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/dislike_post"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/down" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

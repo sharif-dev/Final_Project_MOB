@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,30 +19,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        final BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_search, R.id.navigation_add_post,R.id.navigation_fave_stars,R.id.navigation_user_page)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+        //Fragment nav_host=findViewById(R.id.nav_host_fragment);
 
 
-     /*   navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
 
-                if(item.getItemId()==R.id.navigation_add_post){
-                    Intent intent = new Intent(MainActivity.this, AddPostActivity.class);
-                    startActivity(intent);
-                }
-
-
-                return false;
-            }
-        });*/
 
 
 

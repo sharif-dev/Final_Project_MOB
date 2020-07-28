@@ -1,6 +1,7 @@
 package com.example.project;
 
 import android.media.Image;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -9,23 +10,40 @@ public class post_data {
     String name;
     String username;
     String post_text;
-    //Image profile_pic;
-    //Image post_Image;
-    //private MediaStore.Video.Media
+   // Uri imageUri,profileUri,videoUri;
+    Integer imageUri,profileUri,videoUri;
 
-    public post_data(String name, String username, String post_text){
+    public post_data(String name, String username, String post_text,Integer imageUri,Integer profileUri,Integer videoUri){
         setName(name);
         Log.i("const ", name);
+
+        setImageUri(imageUri);
+        setVideoUri(videoUri);
+        setProfileUri(profileUri);
         //setPost_Image(post_Image);
         setPost_text(post_text);
         //setProfile_pic(profile_pic);
         setUsername(username);
+
     }
 
     public void setName(String name) {
         this.name = name;
     }
-/*
+
+    public void setImageUri(Integer imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    public void setProfileUri(Integer profileUri) {
+        this.profileUri = profileUri;
+    }
+
+    public void setVideoUri(Integer videoUri) {
+        this.videoUri = videoUri;
+    }
+
+    /*
     public void setPost_Image(Image post_Image) {
         this.post_Image = post_Image;
     }*/

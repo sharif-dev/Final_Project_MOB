@@ -39,15 +39,15 @@ public class HomeFragment extends Fragment {
 
 
         post_dataArrayList=new ArrayList<>();
-        post_dataArrayList.add(new post_data("maryam".toString(),"marvt","i'm tired"));
-        post_dataArrayList.add(new post_data("zahra".toString(),"zari","I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best"));
-        post_dataArrayList.add(new post_data("ali","ali88","Motivational quotes can help you reach your potential each day."));
-        post_dataArrayList.add(new post_data("ahmad","ah_k","And if you’re on the verge of giving up or struggling to push yourself to the next level"));
-        post_dataArrayList.add(new post_data("sogand","so_zamani"," These motivational quotes will give you the jumpstart your day needs, so don’t forget to bookmark this page"));
-        post_dataArrayList.add(new post_data("zeinab","z_e","har har har"));
-        post_dataArrayList.add(new post_data("saeed","saeede_hamidi","dg base"));
-        post_dataArrayList.add(new post_data("fateme","fat9988","What Is Motivation"));
-        post_dataArrayList.add(new post_data("mina","mina_r"," If I’m feeling like I’m in a rut, motivational songs like “You’re a Superstar” by Love Inc. picks me up."));
+        post_dataArrayList.add(new post_data("maryam","marvt","i'm tired",R.drawable.photo_post,R.drawable.maryam,null));
+        post_dataArrayList.add(new post_data("zahra","zari","I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best",null,R.drawable.ahmadinejhad,null));
+        post_dataArrayList.add(new post_data("ali","ali88","Motivational quotes can help you reach your potential each day.",null,R.drawable.hasan,null));
+        post_dataArrayList.add(new post_data("ahmad","ah_k","And if you’re on the verge of giving up or struggling to push yourself to the next level",R.drawable.jungle,null,null));
+        post_dataArrayList.add(new post_data("sogand","so_zamani"," These motivational quotes will give you the jumpstart your day needs, so don’t forget to bookmark this page",null,R.drawable.obama,null));
+        post_dataArrayList.add(new post_data("zeinab","z_e","har har har",R.drawable.baby,null,null));
+        post_dataArrayList.add(new post_data("saeed","saeede_hamidi","dg base",null,R.drawable.maryam,null));
+        post_dataArrayList.add(new post_data("fateme","fat9988","What Is Motivation",null,R.drawable.ahmadinejhad,null));
+        post_dataArrayList.add(new post_data("mina","mina_r"," If I’m feeling like I’m in a rut, motivational songs like “You’re a Superstar” by Love Inc. picks me up.",null,R.drawable.ahmadinejhad,null));
 
 
 

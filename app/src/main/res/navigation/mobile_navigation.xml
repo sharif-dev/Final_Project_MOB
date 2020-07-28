@@ -18,11 +18,11 @@
         android:label="search"
         tools:layout="@layout/fragment_search" />
 
-    <activity
+    <fragment
         android:id="@+id/navigation_add_post"
-        android:name="com.example.project.AddPostActivity"
+        android:name="com.example.project.ui.AddPostFragment"
         android:label="add psts"
-        tools:layout="@layout/activity_add_post" />
+        tools:layout="@layout/fragment_addpost" />
 
     <fragment
         android:id="@+id/navigation_fave_stars"
