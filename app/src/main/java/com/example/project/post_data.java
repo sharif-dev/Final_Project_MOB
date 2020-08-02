@@ -8,15 +8,19 @@ import android.util.Log;
 public class post_data {
 
     String name;
+    String id;
+    Integer like;
     String username;
     String post_text;
+
    // Uri imageUri,profileUri,videoUri;
     Integer imageUri,profileUri,videoUri;
 
-    public post_data(String name, String username, String post_text,Integer imageUri,Integer profileUri,Integer videoUri){
+    public post_data(String id , String name, String username, Integer like ,String post_text,Integer imageUri,Integer profileUri,Integer videoUri ){
         setName(name);
+        setid(id);
+        setLike(like);
         Log.i("const ", name);
-
         setImageUri(imageUri);
         setVideoUri(videoUri);
         setProfileUri(profileUri);
@@ -26,6 +30,12 @@ public class post_data {
         setUsername(username);
 
     }
+
+    private void setLike(Integer like) {
+        this.like =like;
+    }
+
+    private void setid(String id) {this.id =id;}
 
     public void setName(String name) {
         this.name = name;

@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -12,9 +13,15 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import java.util.Objects;
 
 public class AddPostActivity extends AppCompatActivity {
     FloatingActionButton post,add_image,add_video;
@@ -42,7 +49,6 @@ public class AddPostActivity extends AppCompatActivity {
         text = findViewById(R.id.text_post);
         image_post=findViewById(R.id.imagetopost);
         videoView=findViewById(R.id.videoView);
-
         image_post.setVisibility(View.GONE);
         videoView.setVisibility(View.GONE);
 
@@ -58,9 +64,18 @@ public class AddPostActivity extends AppCompatActivity {
 
 
         post.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v)
             {
                 Intent myIntent = new Intent(AddPostActivity.this, MainActivity.class);
+
+                ParseObject tweet = new ParseObject("tweets");
+                tweet.put("Text", text.getText().toString());
+                tweet.put("Like", 0);
+                tweet.put("User_name", Objects.requireNonNull(ParseUser.getCurrentUser().getString("name")));
+                tweet.put("User_username", Objects.requireNonNull(ParseUser.getCurrentUser().getUsername()));
+                tweet.saveInBackground();
+
                 startActivity(myIntent);
             }
         });
@@ -107,6 +122,8 @@ public class AddPostActivity extends AppCompatActivity {
             assert selectedMediaUri != null;
             if (selectedMediaUri.toString().contains("image")) {
                 image_post.setImageURI(selectedMediaUri);
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
                 selected_media=true;
                 image_post.setVisibility(View.VISIBLE);
             } else if (selectedMediaUri.toString().contains("video")) {
