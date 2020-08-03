@@ -53,9 +53,10 @@ public class HomeFragment extends Fragment {
                     if (list.size() > 0) {
                         for (int i = 0; i < list.size(); i++) {
                             ParseObject tweet = list.get(i);
-                            ParseRelation<ParseObject> relation1 = ParseUser.getCurrentUser().getRelation("Likes");
-                            ParseQuery<ParseObject> query1 = relation1.getQuery();
-                            post_dataArrayList.add(new post_data(tweet.getObjectId() , tweet.getString("User_name") , tweet.getString("User_username") , tweet.getInt("Like"), tweet.getString("Text"), null, R.drawable.maryam, null ));
+//                            ParseRelation<ParseObject> relation1 = ParseUser.getCurrentUser().getRelation("Likes");
+//                            ParseQuery<ParseObject> query1 = relation1.getQuery();
+                            System.out.println(">>>>>>>>>>>>> photo home : " + tweet.getParseFile("Photo"));
+                            post_dataArrayList.add(new post_data(tweet.getObjectId() , tweet.getString("User_name") , tweet.getString("User_username") , tweet.getInt("Like"), tweet.getString("Text"), tweet.getParseFile("Photo"), R.drawable.maryam, null ));
                         }
                         myAdaptor = new myAdaptor(post_dataArrayList);
                         //recyclerView.setHasFixedSize(true);

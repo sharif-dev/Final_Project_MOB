@@ -1,6 +1,9 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.project.post_data;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -65,10 +70,14 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
 
         }*/
 
-        if(!(this.post_data.get(position).imageUri ==null)) {
+        if(!(this.post_data.get(position).imageUri == null)) {
             //holder.post_image.setImageURI(this.post_data.get(position).imageUri);
-            holder.post_image.setImageResource(this.post_data.get(position).imageUri);
-            holder.post_image.setVisibility(View.VISIBLE);
+//            ParseFile image = (ParseFile) userData.getParseFile("user_image");
+            holder.loadImages( post_data.get(position).imageUri, holder.post_image);
+
+
+//            holder.post_image.setImageResource(this.post_data.get(position).imageUri);
+//            holder.post_image.setVisibility(View.VISIBLE);
 
         }
         if(!(this.post_data.get(position).profileUri ==null)) {
@@ -213,6 +222,21 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
             });
             //profile_pic=itemView.findViewById(R.id.profile_image_post);
             //post_image = itemView.findViewById(R.id.image_post);
+        }
+        private void loadImages(ParseFile thumbnail, final ImageView img) {
+
+            if (thumbnail != null) {
+                thumbnail.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] data, ParseException e) {
+                        if (e == null) {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                            img.setImageBitmap(bmp);
+                            img.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+            }
         }
     }
 }

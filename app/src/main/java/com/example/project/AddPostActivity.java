@@ -1,9 +1,13 @@
 package com.example.project;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +22,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class AddPostActivity extends AppCompatActivity {
@@ -32,7 +42,7 @@ public class AddPostActivity extends AppCompatActivity {
     EditText text;
     Uri selectedMediaUri;
     Boolean selected_media=false;
-
+    byte[] upload_image;
     private static final int PICK_IMAGE = 100;
     private static final int PICK_Video = 200;
     @Override
@@ -68,14 +78,21 @@ public class AddPostActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent myIntent = new Intent(AddPostActivity.this, MainActivity.class);
-
                 ParseObject tweet = new ParseObject("tweets");
                 tweet.put("Text", text.getText().toString());
                 tweet.put("Like", 0);
                 tweet.put("User_name", Objects.requireNonNull(ParseUser.getCurrentUser().getString("name")));
                 tweet.put("User_username", Objects.requireNonNull(ParseUser.getCurrentUser().getUsername()));
+                if (upload_image != null) {
+                    ParseFile file = new ParseFile("photo.png", upload_image);
+                    try {
+                        file.save();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    tweet.put("Photo", file);
+                }
                 tweet.saveInBackground();
-
                 startActivity(myIntent);
             }
         });
@@ -114,26 +131,47 @@ public class AddPostActivity extends AppCompatActivity {
         startActivityForResult(intent, PICK_Video);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-             selectedMediaUri= data.getData();
+            selectedMediaUri = data.getData();
             assert selectedMediaUri != null;
             if (selectedMediaUri.toString().contains("image")) {
                 image_post.setImageURI(selectedMediaUri);
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
 
-                selected_media=true;
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+                Cursor cursor = getContentResolver().query(selectedMediaUri,
+                        filePathColumn, null, null, null);
+                assert cursor != null;
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
+                Bitmap bitmap = null;
+
+                try (ParcelFileDescriptor pfd = this.getContentResolver().openFileDescriptor(selectedMediaUri, "r")) {
+                    if (pfd != null) {
+                        bitmap = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
+                    }
+                } catch (IOException ex) {
+
+                }
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                assert bitmap != null;
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                upload_image= stream.toByteArray();
+                selected_media = true;
                 image_post.setVisibility(View.VISIBLE);
             } else if (selectedMediaUri.toString().contains("video")) {
                 videoView.setVideoURI(selectedMediaUri);
-                selected_media=true;
+                selected_media = true;
                 videoView.setVisibility(View.VISIBLE);
                 videoView.setZOrderOnTop(true);//this line solve the problem
                 videoView.start();
             }
         }
     }
-
 }

@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.parse.ParseFile;
+
 public class post_data {
 
     String name;
@@ -14,9 +16,10 @@ public class post_data {
     String post_text;
 
    // Uri imageUri,profileUri,videoUri;
-    Integer imageUri,profileUri,videoUri;
+    Integer profileUri,videoUri;
+    ParseFile imageUri;
 
-    public post_data(String id , String name, String username, Integer like ,String post_text,Integer imageUri,Integer profileUri,Integer videoUri ){
+    public post_data(String id , String name, String username, Integer like ,String post_text,ParseFile imageUri,Integer profileUri,Integer videoUri ){
         setName(name);
         setid(id);
         setLike(like);
@@ -41,7 +44,7 @@ public class post_data {
         this.name = name;
     }
 
-    public void setImageUri(Integer imageUri) {
+    public void setImageUri(ParseFile imageUri) {
         this.imageUri = imageUri;
     }
 
