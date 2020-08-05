@@ -1,6 +1,8 @@
 package com.example.project;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,15 +21,20 @@ import android.widget.VideoView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.project.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -43,6 +50,7 @@ public class AddPostActivity extends AppCompatActivity {
     Uri selectedMediaUri;
     Boolean selected_media=false;
     byte[] upload_image;
+    byte[] upload_movie;
     private static final int PICK_IMAGE = 100;
     private static final int PICK_Video = 200;
     @Override
@@ -73,6 +81,36 @@ public class AddPostActivity extends AppCompatActivity {
         callback.setEnabled(true);
 
 
+
+        ParseUser user = ParseUser.getCurrentUser();
+        profile=findViewById(R.id.profile_image_post);
+        loadImages_profile( user.getParseFile("Photo"), profile);
+
+
+//        post.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//            public void onClick(View v)
+//            {
+//                Intent myIntent = new Intent(AddPostActivity.this, MainActivity.class);
+//                ParseObject tweet = new ParseObject("tweets");
+//                tweet.put("Text", text.getText().toString());
+//                tweet.put("Like", 0);
+//                tweet.put("User_name", Objects.requireNonNull(ParseUser.getCurrentUser().getString("name")));
+//                tweet.put("User_username", Objects.requireNonNull(ParseUser.getCurrentUser().getUsername()));
+//                if (upload_image != null) {
+//                    ParseFile file = new ParseFile("photo.png", upload_image);
+//                    try {
+//                        file.save();
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//                    tweet.put("Photo", file);
+//                }
+//                tweet.saveInBackground();
+//                startActivity(myIntent);
+//            }
+//        });
+
         post.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             public void onClick(View v)
@@ -91,6 +129,15 @@ public class AddPostActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     tweet.put("Photo", file);
+                }
+                if (upload_movie != null) {
+                    ParseFile file = new ParseFile("movie.mp4", upload_movie);
+                    try {
+                        file.save();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    tweet.put("Movie", file);
                 }
                 tweet.saveInBackground();
                 startActivity(myIntent);
@@ -131,6 +178,7 @@ public class AddPostActivity extends AppCompatActivity {
         startActivityForResult(intent, PICK_Video);
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -138,10 +186,10 @@ public class AddPostActivity extends AppCompatActivity {
             selectedMediaUri = data.getData();
             assert selectedMediaUri != null;
             if (selectedMediaUri.toString().contains("image")) {
-                image_post.setImageURI(selectedMediaUri);
-
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                }
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
                 Cursor cursor = getContentResolver().query(selectedMediaUri,
                         filePathColumn, null, null, null);
                 assert cursor != null;
@@ -156,22 +204,84 @@ public class AddPostActivity extends AppCompatActivity {
                     if (pfd != null) {
                         bitmap = BitmapFactory.decodeFileDescriptor(pfd.getFileDescriptor());
                     }
-                } catch (IOException ex) {
-
-                }
+                } catch (IOException ex) {}
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 assert bitmap != null;
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 upload_image= stream.toByteArray();
+                image_post.setImageBitmap(bitmap);
                 selected_media = true;
                 image_post.setVisibility(View.VISIBLE);
             } else if (selectedMediaUri.toString().contains("video")) {
                 videoView.setVideoURI(selectedMediaUri);
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                }
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
+
+                String[] projection = { MediaStore.Video.Media.DATA };
+                Cursor cursor = getContentResolver().query(selectedMediaUri, projection, null, null, null);
+                String picturePath = "";
+                if (cursor != null) {
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                    System.out.println("column_index >>> " + column_index);
+                    cursor.moveToFirst();
+                    picturePath = cursor.getString(column_index);
+                    cursor.close();
+                    File inputFile = new File(picturePath);
+                    try {
+                        inputFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(inputFile);
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream(inputFile);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte[] buf = new byte[(int) inputFile.length()];
+                    try {
+                        assert fis != null;
+                        for (int readNum; (readNum = fis.read(buf)) != -1; ) {
+                            bos.write(buf, 0, readNum);
+                            upload_movie = bos.toByteArray();
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 selected_media = true;
                 videoView.setVisibility(View.VISIBLE);
                 videoView.setZOrderOnTop(true);//this line solve the problem
                 videoView.start();
             }
         }
+
+
     }
+
+
+    private void loadImages_profile(ParseFile thumbnail, final ImageView img) {
+
+        if (thumbnail != null) {
+            thumbnail.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        img.setImageBitmap(bmp);
+                        img.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+        }
+    }
+
 }

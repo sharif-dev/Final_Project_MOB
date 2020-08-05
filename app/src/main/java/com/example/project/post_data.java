@@ -16,10 +16,13 @@ public class post_data {
     String post_text;
 
    // Uri imageUri,profileUri,videoUri;
-    Integer profileUri,videoUri;
+    ParseFile videoUri;
     ParseFile imageUri;
+    ParseFile profileUri;
+    Boolean isLiked ;
+    Boolean isDisliked;
 
-    public post_data(String id , String name, String username, Integer like ,String post_text,ParseFile imageUri,Integer profileUri,Integer videoUri ){
+    public post_data(String id , String name, String username, Integer like ,String post_text,ParseFile imageUri,ParseFile profileUri,ParseFile videoUri, Boolean isLiked , Boolean isDisliked  ){
         setName(name);
         setid(id);
         setLike(like);
@@ -27,10 +30,11 @@ public class post_data {
         setImageUri(imageUri);
         setVideoUri(videoUri);
         setProfileUri(profileUri);
-        //setPost_Image(post_Image);
         setPost_text(post_text);
-        //setProfile_pic(profile_pic);
         setUsername(username);
+        this.isLiked = isLiked;
+        this.isDisliked = isDisliked;
+
 
     }
 
@@ -48,11 +52,11 @@ public class post_data {
         this.imageUri = imageUri;
     }
 
-    public void setProfileUri(Integer profileUri) {
+    public void setProfileUri(ParseFile profileUri) {
         this.profileUri = profileUri;
     }
 
-    public void setVideoUri(Integer videoUri) {
+    public void setVideoUri(ParseFile videoUri) {
         this.videoUri = videoUri;
     }
 

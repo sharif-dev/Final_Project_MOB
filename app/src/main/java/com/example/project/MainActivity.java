@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         //Fragment nav_host=findViewById(R.id.nav_host_fragment);
 
 
+
     }
 
 }

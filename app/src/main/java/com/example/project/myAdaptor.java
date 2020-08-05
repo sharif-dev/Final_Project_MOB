@@ -1,8 +1,13 @@
 package com.example.project;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +18,8 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.project.post_data;
 import com.parse.FindCallback;
@@ -25,6 +32,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +52,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
     }
 
 
-
+    @NonNull
     public myAdaptor.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
         return new ViewHolder(view);
@@ -58,31 +72,28 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
         holder.id_post = post_data.get(position).id;
         holder.no_of_like = post_data.get(position).like;
         holder.like_num.setText(String.valueOf(holder.no_of_like));
+        holder.is_liked = post_data.get(position).isLiked;
 
+        if (holder.is_liked){
+            holder.like.setImageResource(R.drawable.fill_up);
+            holder.like.setTag(R.drawable.fill_up);
+        }
+        holder.is_disliked = post_data.get(position).isDisliked;
+        if (holder.is_disliked){
+            holder.dislike.setImageResource(R.drawable.fill_down);
+            holder.dislike.setTag(R.drawable.fill_down);
+        }
 
-        //holder.post_image.setImageURI(this.post_data.get(position).imageUri);
-//        holder.post_image.setImageResource(this.post_data.get(position).imageUri);
-/*
-        if(!(this.post_data.get(position).videoUri ==null)){
-           // holder.video.setVideoURI(this.post_data.get(position).videoUri);
-             holder.video.setV(this.post_data.get(position).videoUri);
-
-
-        }*/
 
         if(!(this.post_data.get(position).imageUri == null)) {
-            //holder.post_image.setImageURI(this.post_data.get(position).imageUri);
-//            ParseFile image = (ParseFile) userData.getParseFile("user_image");
-            holder.loadImages( post_data.get(position).imageUri, holder.post_image);
-
-
-//            holder.post_image.setImageResource(this.post_data.get(position).imageUri);
-//            holder.post_image.setVisibility(View.VISIBLE);
-
+            holder.loadImages(post_data.get(position).imageUri, holder.post_image);
         }
+        if(!(this.post_data.get(position).videoUri == null)) {
+            holder.loadVideos( post_data.get(position).videoUri, holder.video , holder);
+        }
+
         if(!(this.post_data.get(position).profileUri ==null)) {
-            //holder.profile_pic.setImageURI(this.post_data.get(position).profileUri);
-            holder.profile_pic.setImageResource(this.post_data.get(position).profileUri);
+            holder.loadImages( post_data.get(position).profileUri, holder.profile_pic);
 
         }
 
@@ -93,6 +104,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
     public int getItemCount() {
         return post_data.size();
     }
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
@@ -160,7 +172,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
                                         tweet.increment("Like" , -1);
                                         tweet.saveInBackground();
                                         ParseUser user = ParseUser.getCurrentUser();
-                                        ParseRelation<ParseObject> relation = user.getRelation("Dislikes");
+                                        ParseRelation<ParseObject> relation = user.getRelation("Likes");
                                         relation.remove(tweet);
                                         user.saveInBackground();
                                     }
@@ -190,7 +202,7 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
                                         tweet.saveInBackground();
                                         ParseUser user = ParseUser.getCurrentUser();
                                         ParseRelation<ParseObject> relation = user.getRelation("Dislikes");
-                                        relation.remove(tweet);
+                                        relation.add(tweet);
                                         user.saveInBackground();
                                     }
                                 }
@@ -209,8 +221,8 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
                                         tweet.increment("Like" );
                                         tweet.saveInBackground();
                                         ParseUser user = ParseUser.getCurrentUser();
-                                        ParseRelation<ParseObject> relation = user.getRelation("Likes");
-                                        relation.add(tweet);
+                                        ParseRelation<ParseObject> relation = user.getRelation("Dislikes");
+                                        relation.remove(tweet);
                                         user.saveInBackground();
                                     }
                                 }
@@ -223,6 +235,9 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
             //profile_pic=itemView.findViewById(R.id.profile_image_post);
             //post_image = itemView.findViewById(R.id.image_post);
         }
+
+
+
         private void loadImages(ParseFile thumbnail, final ImageView img) {
 
             if (thumbnail != null) {
@@ -238,5 +253,57 @@ public class myAdaptor extends RecyclerView.Adapter<myAdaptor.ViewHolder> {
                 });
             }
         }
+
+        private void loadVideos(ParseFile thumbnail, final VideoView videoView , final ViewHolder holder ) {
+            if (thumbnail != null) {
+                thumbnail.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] data, ParseException e) {
+                        if (e == null) {
+                            if (ContextCompat.checkSelfPermission(holder.video.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions((Activity) holder.video.getContext(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                            }
+                            InputStream input = new ByteArrayInputStream(data);
+                            File file = new File (Environment.getExternalStorageDirectory().toString(),"video.mp4");
+
+                            OutputStream output  = null;
+                            try {
+                                output = new FileOutputStream(file);
+                            } catch (FileNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+                            System.out.println("@@@@@@@@@@@@%%%%%%%%%%%% :  LOOOOOOAAAAD" );
+                            byte[] videoBytes = new byte[data.length];
+                            int count;
+                            while (true) {
+                                try {
+                                    if ((count = input.read(videoBytes)) == -1) break;
+                                    {
+                                        assert output != null;
+                                        output.write(videoBytes, 0, count);
+                                    }
+                                }catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+
+                            }
+                            try {
+                                assert output != null;
+                                output.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+
+                            Uri video = Uri.parse(file.getAbsolutePath());
+                            videoView.setVisibility(View.VISIBLE);
+                            videoView.setVideoURI(video);
+                            videoView.start();
+                        }
+                    }
+                });
+            }
+        }
+
+
     }
 }

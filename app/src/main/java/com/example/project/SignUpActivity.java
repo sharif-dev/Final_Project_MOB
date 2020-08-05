@@ -23,16 +23,17 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        name=findViewById(R.id.name_id);
-        userName=findViewById(R.id.user_id);
-        password=findViewById(R.id.password);
-        repeatPassword=findViewById(R.id.repass);
-        email=findViewById(R.id.email);
-        PhoneNumber=findViewById(R.id.phone_id);
-
         setContentView(R.layout.sign_up);
+
+
+        name=(EditText)findViewById(R.id.name_id);
+        userName=(EditText)findViewById(R.id.user_id);
+        password=(EditText)findViewById(R.id.password);
+        repeatPassword=(EditText)findViewById(R.id.repass);
+        email=(EditText)findViewById(R.id.email);
+        PhoneNumber=(EditText)findViewById(R.id.phone_id);
+
+
         Button sign_up_button = findViewById(R.id.sign_up_sign_up_button);
 
         sign_up_button.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +57,9 @@ public class SignUpActivity extends AppCompatActivity {
                 else if (TextUtils.isEmpty(PhoneNumber.getText())) {
                     PhoneNumber.setError("phone number  is required!");
                 }
-                else if (!password.getText().toString().equals(repeatPassword.getText().toString())){
-                    PhoneNumber.setError("password and repeat not same!");
-                }
+//                else if (!password.getText().toString().equals(repeatPassword.getText().toString())){
+//                    PhoneNumber.setError("password and repeat not same!");
+//                }
                 else{
 
                     ParseUser user = new ParseUser();
@@ -66,17 +67,22 @@ public class SignUpActivity extends AppCompatActivity {
                     user.setUsername(userName.getText().toString().trim());
                     user.setPassword(password.getText().toString());
 //                    user.put("phone number",PhoneNumber.getText().toString().trim());
-//                    user.put("name",name.getText().toString().trim());
+                    user.put("name",name.getText().toString().trim());
+                    user.saveInBackground();
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
                                 Toast.makeText(SignUpActivity.this,"welcome", Toast.LENGTH_LONG).show();
+                                System.out.println("Yessssssssss");
                                 Intent myIntent = new Intent(SignUpActivity.this, SignInActivity.class);
                                 //myIntent.putExtra("key", value); //Optional parameters
                                 SignUpActivity.this.startActivity(myIntent);
+
+
                             } else {
                                 ParseUser.logOut();
+                                System.out.println("Noooooooooooooooo");
                                 Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }

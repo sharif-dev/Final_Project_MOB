@@ -10,6 +10,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,12 +19,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.054">
 
-        <ImageView
-            android:id="@+id/search_icon_id"
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/search_button"
             android:layout_width="60dp"
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_baseline_search_24" />
+            app:backgroundTint="#D3CFCF"
+            app:srcCompat="@drawable/ic_baseline_search_24" />
+
 
         <EditText
             android:id="@+id/search_text_id"
@@ -31,19 +35,23 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
             android:ems="10"
+            android:layout_marginLeft="20dp"
             android:hint="search here"
             android:inputType="textPersonName"
             android:singleLine="true"
             android:textSize="20sp" />
+
+
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="409dp"
-        android:layout_height="643dp"
-        android:layout_marginTop="12dp"
+        android:id="@+id/search_recyclerv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
