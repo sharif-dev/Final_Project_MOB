@@ -5,41 +5,58 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.parse.ParseFile;
+
 public class post_data {
 
     String name;
+    String id;
+    Integer like;
     String username;
     String post_text;
+
    // Uri imageUri,profileUri,videoUri;
-    Integer imageUri,profileUri,videoUri;
+    ParseFile videoUri;
+    ParseFile imageUri;
+    ParseFile profileUri;
+    Boolean isLiked ;
+    Boolean isDisliked;
 
-    public post_data(String name, String username, String post_text,Integer imageUri,Integer profileUri,Integer videoUri){
+    public post_data(String id , String name, String username, Integer like ,String post_text,ParseFile imageUri,ParseFile profileUri,ParseFile videoUri, Boolean isLiked , Boolean isDisliked  ){
         setName(name);
+        setid(id);
+        setLike(like);
         Log.i("const ", name);
-
         setImageUri(imageUri);
         setVideoUri(videoUri);
         setProfileUri(profileUri);
-        //setPost_Image(post_Image);
         setPost_text(post_text);
-        //setProfile_pic(profile_pic);
         setUsername(username);
+        this.isLiked = isLiked;
+        this.isDisliked = isDisliked;
+
 
     }
+
+    private void setLike(Integer like) {
+        this.like =like;
+    }
+
+    private void setid(String id) {this.id =id;}
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setImageUri(Integer imageUri) {
+    public void setImageUri(ParseFile imageUri) {
         this.imageUri = imageUri;
     }
 
-    public void setProfileUri(Integer profileUri) {
+    public void setProfileUri(ParseFile profileUri) {
         this.profileUri = profileUri;
     }
 
-    public void setVideoUri(Integer videoUri) {
+    public void setVideoUri(ParseFile videoUri) {
         this.videoUri = videoUri;
     }
 
