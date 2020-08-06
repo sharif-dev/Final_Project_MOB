@@ -37,14 +37,18 @@ import com.example.project.SignInActivity;
 import com.example.project.post_data;
 import com.google.android.material.tabs.TabLayout;
 import com.example.project.myAdaptor;
+import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.parse.Parse.getApplicationContext;
@@ -66,6 +70,9 @@ public class UserPageFragment extends Fragment {
     Boolean selected_media=false;
     TextView name;
     TextView username;
+    String name_;
+    String username_;
+
 //    ImageView image_post;
 //    ParseFile thumbnail;
 
@@ -91,9 +98,16 @@ public class UserPageFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
         final TabLayout tabLayout= root.findViewById(R.id.tabLayout);
 
+
         name = (TextView) root.findViewById(R.id.name_profile);
         username = (TextView) root.findViewById(R.id.username_profille);
-
+        post_likedArrayList=new ArrayList<>();
+        ParseUser user = ParseUser.getCurrentUser();
+        name_ = (String) user.get("name");
+        username_ = (String) user.get("username");
+        name.setText(name_);
+        username.setText("@"+username_);
+        post_dislikedArrayList=new ArrayList<>();
 
 
 
@@ -143,7 +157,6 @@ public class UserPageFragment extends Fragment {
             }
         });
 
-        ParseUser user = ParseUser.getCurrentUser();
         profile_pic=root.findViewById(R.id.profile_image);
         loadImages_profile( user.getParseFile("Photo"), profile_pic);
         profile_pic.setOnClickListener(new View.OnClickListener() {

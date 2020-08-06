@@ -64,10 +64,11 @@ public class HomeFragment extends Fragment {
                     if (list.size() > 0) {
                         for (int i = 0; i < list.size(); i++) {
                             ParseObject user = list.get(i);
+                            if (user.getParseFile("Photo")!=null) {
                             my_dict.put(user.getString("username"), user.getParseFile("Photo"));
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + my_dict);
 
-                        }
+                        }}
                     }
 
                 }
@@ -75,27 +76,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-//        ParseQuery<ParseObject> query = new ParseQuery<>("tweets");
-//        query.orderByDescending("createdAt");
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> list, ParseException e) {
-//                if (e == null) {
-//                    if (list.size() > 0) {
-//                        for (int i = 0; i < list.size(); i++) {
-//                            ParseObject tweet = list.get(i);
-//                            ParseUser user = ParseUser.getCurrentUser();
-//                            temp=my_dict.get(tweet.getString("User_name"));
-//                            post_dataArrayList.add(new post_data(tweet.getObjectId() , tweet.getString("User_name") , tweet.getString("User_username") , tweet.getInt("Like"), tweet.getString("Text"), tweet.getParseFile("Photo"),temp, null ));
-//                        }
-//                        myAdaptor = new myAdaptor(post_dataArrayList);
-//                        //recyclerView.setHasFixedSize(true);
-//                        recyclerView.setAdapter(myAdaptor);
-//                    }
-//
-//                }
-//            }
-//        });
 
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation1 = user.getRelation("Likes");
@@ -140,7 +120,7 @@ public class HomeFragment extends Fragment {
                         for (int i = 0; i < list.size(); i++) {
                             ParseObject tweet = list.get(i);
                             String id_tweet = tweet.getObjectId();
-                            temp=my_dict.get(tweet.getString("User_name"));
+                            temp=my_dict.get(tweet.getString("User_username"));
                             if (Tweet_Like.contains(id_tweet))
                                 post_dataArrayList.add(new post_data(tweet.getObjectId() , tweet.getString("User_name") , tweet.getString("User_username") , tweet.getInt("Like"), tweet.getString("Text"), tweet.getParseFile("Photo"), temp,  tweet.getParseFile("Movie")  , true  , false));
                             else if (Tweet_Dislike.contains(id_tweet))
