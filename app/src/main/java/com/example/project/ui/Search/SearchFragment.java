@@ -69,11 +69,11 @@ public class SearchFragment extends Fragment {
                     if (list.size() > 0) {
                         for (int i = 0; i < list.size(); i++) {
                             ParseObject user = list.get(i);
-
+                            if (user.getParseFile("Photo")!=null) {
                             my_dict.put(user.getString("username"), user.getParseFile("Photo"));
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + my_dict);
 
-                        }
+                        }}
                     }
 
                 } else {
@@ -92,6 +92,7 @@ public class SearchFragment extends Fragment {
             {
                 if (Search.getText()!=null){
                     search = Search.getText().toString();
+                    search = search + " ";
                     System.out.println(search);
                     ParseQuery<ParseObject> query = new ParseQuery<>("tweets");
                     query.whereContains("Text",search);
@@ -102,7 +103,7 @@ public class SearchFragment extends Fragment {
                                     for (int i = 0; i < list.size(); i++) {
                                         ParseObject tweet = list.get(i);
                                         ParseUser user = ParseUser.getCurrentUser();
-                                        temp=my_dict.get(tweet.getString("User_name"));
+                                        temp=my_dict.get(tweet.getString("User_username"));
                                         post_dataArrayList.add(new post_data(tweet.getObjectId() , tweet.getString("User_name") , tweet.getString("User_username") , tweet.getInt("Like"), tweet.getString("Text"), tweet.getParseFile("Photo"), temp,tweet.getParseFile("Movie"),false,false  ));
                                     }
                                     myAdaptor = new myAdaptor(post_dataArrayList);
